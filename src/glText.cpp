@@ -23,7 +23,6 @@
 #include "gltext/glText.h"
 
 
-
 #define DEFAULT_COLOR      0, 0, 0, 255 // OPAQUE BLACK
 #define DEFAULT_FONT_NAME  "arial"
 #define DEFAULT_FONT_SIZE  12

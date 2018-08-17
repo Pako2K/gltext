@@ -27,7 +27,12 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include <iostream>
+#ifdef DEBUG
+  #include <iostream>
+  #define TRACE(str) std::cout << "DEBUG: " << str << std::endl;
+#else
+  #define TRACE(str)
+#endif
 
 
 #define MIN_CHAR_CODE 32
@@ -103,7 +108,6 @@ glFont& glFont::getFont(std::string font_name, GT_FontSize font_size) {
 
 
 void glFont::release() {
-  //std::cout << "glFont RELEASED " << _name << " - " << _size << std::endl;
   _fonts_clients[uid()]--;
   if ( _fonts_clients[uid()] == 0 ) {
     if ( _fonts_cache.size() == MAX_CACHE_SIZE ) {
@@ -116,7 +120,7 @@ void glFont::release() {
 
 
 glFont::glFont(std::string font_name, GT_FontSize font_size) throw(std::string) : _name{font_name}, _size{font_size} {
-  std::cout << "glFont CONSTRUCTOR CALLED " << font_name << " - " << font_size << std::endl;
+  TRACE(std::string("glFont CONSTRUCTOR CALLED " + font_name + " - " + std::to_string(font_size) ))
 
   // Initialize Freetype
   FT_Library ft_lib;
@@ -187,7 +191,7 @@ glFont::glFont(std::string font_name, GT_FontSize font_size) throw(std::string) 
   for (FT_ULong chr = MIN_CHAR_CODE; chr <= MAX_CHAR_CODE; chr++) {
     // Load character glyph
     if (FT_Load_Char(face, chr, FT_LOAD_RENDER)) {
-      std::cout << "ERROR: Failed to load Glyph " << chr << " (" << font_name << ")" << std::endl;
+      TRACE( std::string("ERROR: Failed to load Glyph " + std::to_string(chr) + " (" + font_name + ")") )
       _glyphs.insert(std::pair<GT_CharCode, glFont::Glyph>(chr, glFont::Glyph { { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } },
                                                                                 { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } },
                                                                                 { 0, 0 } } ));
@@ -240,7 +244,7 @@ glFont::glFont(std::string font_name, GT_FontSize font_size) throw(std::string) 
 
 
 glFont::~glFont() {
-  std::cout << "glFont DESTROYED " << _name << " - " << _size << std::endl;
+  TRACE(std::string("glFont DESTROYED " + _name + " - " + std::to_string(_size)))
 
   //Delete font texture
   glDeleteTextures(1, &_texture_id);

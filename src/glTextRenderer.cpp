@@ -29,11 +29,16 @@
 
 
 #ifdef DEBUG
+  #include <iostream>
+  #define TRACE(str) std::cout << "DEBUG: " << str << std::endl;
+
   const std::string __VERT_SHADER_SRC__ {"shaders/glyph_vs.glsl"};
   const std::string __FRAG_SHADER_SRC__ {"shaders/glyph_fs.glsl"};
 #else
   #include "../shaders/glyph_vs.glsl.h"
   #include "../shaders/glyph_fs.glsl.h"
+
+  #define TRACE(str)
 #endif
 
 using namespace gltext;
@@ -99,7 +104,7 @@ void glTextRenderer::draw(const std::string &text, const gltext::glFont &font, c
 
 
 glTextRenderer::glTextRenderer() {
-  std::cout << "glTextRenderer CONSTRUCTOR CALLED" << std::endl;
+  TRACE("glTextRenderer CONSTRUCTOR CALLED")
 
   // Program
   _program = new glo2::Program();
@@ -113,7 +118,7 @@ glTextRenderer::glTextRenderer() {
     _program->linkProgram();
   }
   catch (std::string &exc){
-    std::cout << "ERROR: Cannot create GL program for the Text renderer " << std::endl;
+    TRACE("ERROR: Cannot create GL program for the Text renderer")
     throw exc;
   }
 
@@ -159,7 +164,7 @@ glTextRenderer::glTextRenderer() {
 
 
 glTextRenderer::~glTextRenderer() {
-  std::cout << "glTextRenderer DESTROYED" << std::endl;
+  TRACE("glTextRenderer DESTROYED")
 
   glDeleteBuffers(1, &_vbuffer);
   glDeleteVertexArrays(1, &_vao);
