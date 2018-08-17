@@ -7,7 +7,7 @@ Library dependencies (includes)
   * glo2
   * glm 0.9.8.5
 
-Application dependencies (libraries to be linked with)
+Libraries to be linked with in the using application
   * FreeType 2.9.1
   * glew 2.1.0
   * opengl32
