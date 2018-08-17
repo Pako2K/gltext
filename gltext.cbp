@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="gltext" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug-Win32">
+				<Option platforms="Windows;" />
+				<Option output="bin/debug/win32/gltext_tester" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/debug/win32" />
+				<Option object_output="obj/debug/win32" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Option projectIncludeDirsRelation="1" />
+				<Option projectLibDirsRelation="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-m32" />
+					<Add option="-g" />
+					<Add option="-DDEBUG" />
+					<Add directory="include" />
+					<Add directory="../dependencies/FreeType-2.9.1/include" />
+					<Add directory="../dependencies/glew-2.1.0" />
+					<Add directory="../dependencies/glo2-1.0/include" />
+					<Add directory="../dependencies/GLFW-3.2.1/include" />
+					<Add directory="../dependencies/glm-0.9.8.5" />
+				</Compiler>
+				<Linker>
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
+					<Add option="-m32" />
+					<Add library="FreeType" />
+					<Add library="glew" />
+					<Add library="opengl32" />
+					<Add library="glfw3" />
+					<Add library="gdi32" />
+					<Add library="glo2" />
+					<Add directory="../dependencies/FreeType-2.9.1/lib/release/win32" />
+					<Add directory="../dependencies/glew-2.1.0/lib/release/win32" />
+					<Add directory="../dependencies/GLFW-3.2.1/lib" />
+					<Add directory="../dependencies/glo2-1.0/lib/release/win32" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="copyshaders.bat" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Release-Win32">
+				<Option platforms="Windows;" />
+				<Option output="lib/release/win32/gltext" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/release/win32" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Option projectIncludeDirsRelation="1" />
+				<Option projectLibDirsRelation="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-m32" />
+					<Add directory="include" />
+					<Add directory="../dependencies/FreeType-2.9.1/include" />
+					<Add directory="../dependencies/glew-2.1.0" />
+					<Add directory="../dependencies/glo2-1.0/include" />
+					<Add directory="../dependencies/glm-0.9.8.5" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-m32" />
+				</Linker>
+			</Target>
+		</Build>
+		<Linker>
+			<Add library="glfw3" />
+			<Add library="FreeType" />
+			<Add library="gdi32" />
+			<Add library="../glew/lib/Release/libglew32s.a" />
+			<Add library="opengl32" />
+		</Linker>
+		<Unit filename="include/gltext/glFont.h" />
+		<Unit filename="include/gltext/glText.h" />
+		<Unit filename="include/gltext/glTextRenderer.h" />
+		<Unit filename="include/gltext/typedefs.h" />
+		<Unit filename="shaders/glyph_fs.glsl">
+			<Option target="Debug-Win32" />
+		</Unit>
+		<Unit filename="shaders/glyph_fs.glsl.h">
+			<Option target="Release-Win32" />
+		</Unit>
+		<Unit filename="shaders/glyph_vs.glsl">
+			<Option target="Debug-Win32" />
+		</Unit>
+		<Unit filename="shaders/glyph_vs.glsl.h">
+			<Option target="Release-Win32" />
+		</Unit>
+		<Unit filename="src/glFont.cpp" />
+		<Unit filename="src/glText.cpp" />
+		<Unit filename="src/glTextRenderer.cpp" />
+		<Unit filename="src/tester.cpp">
+			<Option target="Debug-Win32" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
