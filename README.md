@@ -15,4 +15,4 @@ Libraries to be linked with in the using application
 
 The test application uses additionally GLFW in order to create a Window and the OpenGL context
 
-Shaders files are manually converted into header files so they are delivered inside the static library
+Shaders files are automatically converted into header files so they are delivered inside the static library
