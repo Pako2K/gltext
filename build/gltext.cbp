@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="gltext" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug_Win_32">
+				<Option platforms="Windows;" />
+				<Option output="bin/$(COMP)/$(CONF)/$(OS)/gltext_tester" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/$(COMP)/$(CONF)/$(OS)" />
+				<Option object_output="obj/$(COMP)/$(CONF)/$(OS)" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Option projectLibDirsRelation="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-m32" />
+					<Add option="-g" />
+					<Add option="-DDEBUG" />
+					<Add directory="$(DEPEND_DIR)/glfw-3.2.1/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-m32" />
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
+					<Add library="freetype" />
+					<Add library="glew" />
+					<Add library="opengl32" />
+					<Add library="glfw" />
+					<Add library="gdi32" />
+					<Add library="glo2" />
+					<Add directory="$$(DEPEND_DIR)/glfw-3.2.1/lib/$$(COMP)/$$(OS)/" />
+					<Add directory="$$(DEPEND_DIR)/freetype-2.7.1/lib/$$(COMP)/$$(OS))/" />
+					<Add directory="$$(DEPEND_DIR)/glew-2.1.0/lib/$$(COMP)/$$(OS)/" />
+					<Add directory="$$(DEPEND_DIR)/glo2-1.0.0/lib/$$(COMP)/$$(OS)/" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="xcopy ..\shaders\*.glsl bin\$(COMP)\$(CONF)\$(OS)\shaders /E/Y/I" />
+					<Mode after="always" />
+				</ExtraCommands>
+				<Environment>
+					<Variable name="CONF" value="debug" />
+					<Variable name="OS" value="win32" />
+				</Environment>
+			</Target>
+			<Target title="Debug_Win_64">
+				<Option platforms="Windows;" />
+				<Option output="bin/$(COMP)/$(CONF)/$(OS)/gltext_tester" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/$(COMP)/$(CONF)/$(OS)" />
+				<Option object_output="obj/$(COMP)/$(CONF)/$(OS)" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Option projectLibDirsRelation="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-m64" />
+					<Add option="-g" />
+					<Add option="-DDEBUG" />
+					<Add directory="$(DEPEND_DIR)/glfw-3.2.1/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-m64" />
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
+					<Add library="freetype" />
+					<Add library="glew" />
+					<Add library="opengl32" />
+					<Add library="glfw" />
+					<Add library="gdi32" />
+					<Add library="glo2" />
+					<Add directory="$$(DEPEND_DIR)/glfw-3.2.1/lib/$$(COMP)/$$(OS)" />
+					<Add directory="$$(DEPEND_DIR)/freetype-2.7.1/lib/$$(COMP)/$$(OS)" />
+					<Add directory="$$(DEPEND_DIR)/glew-2.1.0/lib/$$(COMP)/$$(OS)" />
+					<Add directory="$$(DEPEND_DIR)/glo2-1.0.0/lib/$$(COMP)/$$(OS)" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="xcopy ..\shaders\*.glsl bin\$(COMP)\$(CONF)\$(OS)\shaders /E/Y/I" />
+					<Mode after="always" />
+				</ExtraCommands>
+				<Environment>
+					<Variable name="CONF" value="debug" />
+					<Variable name="OS" value="win64" />
+				</Environment>
+			</Target>
+			<Target title="Release_Win_32_static">
+				<Option platforms="Windows;" />
+				<Option output="../gltext-$(VER)-bundle/lib/$(COMP)/$(OS)/gltext" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/$(COMP)/$(CONF)/$(OS)" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Option projectLibDirsRelation="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-m32" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-m32" />
+				</Linker>
+				<ExtraCommands>
+					<Add before="shader2header.bat ..\shaders\glyph_vs.glsl ..\shaders\glyph_vs.glsl.h __VERT_SHADER_SRC__" />
+					<Add before="shader2header.bat ..\shaders\glyph_fs.glsl ..\shaders\glyph_fs.glsl.h __FRAG_SHADER_SRC__" />
+					<Add after="xcopy ..\include ..\gltext-1.0.0-bundle\include  /E/Y/I" />
+					<Mode after="always" />
+				</ExtraCommands>
+				<Environment>
+					<Variable name="CONF" value="release" />
+					<Variable name="OS" value="win32" />
+				</Environment>
+			</Target>
+			<Target title="Release_Win_64_static">
+				<Option platforms="Windows;" />
+				<Option output="../gltext-$(VER)-bundle/lib/$(COMP)/$(OS)/gltext" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/$(COMP)/$(CONF)/$(OS)" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Option projectLibDirsRelation="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-m64" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-m64" />
+				</Linker>
+				<ExtraCommands>
+					<Add before="shader2header.bat ..\shaders\glyph_vs.glsl ..\shaders\glyph_vs.glsl.h __VERT_SHADER_SRC__" />
+					<Add before="shader2header.bat ..\shaders\glyph_fs.glsl ..\shaders\glyph_fs.glsl.h __FRAG_SHADER_SRC__" />
+					<Add after="xcopy ..\include ..\gltext-1.0.0-bundle\include  /E/Y/I" />
+					<Mode after="always" />
+				</ExtraCommands>
+				<Environment>
+					<Variable name="CONF" value="release" />
+					<Variable name="OS" value="win64" />
+				</Environment>
+			</Target>
+			<Environment>
+				<Variable name="COMP" value="mingw-w64" />
+				<Variable name="DEPEND_DIR" value="..\..\dependencies" />
+				<Variable name="VER" value="1.0.0" />
+			</Environment>
+		</Build>
+		<Compiler>
+			<Add directory="../include" />
+			<Add directory="$(DEPEND_DIR)/freetype-2.7.1/include" />
+			<Add directory="$(DEPEND_DIR)/glew-2.1.0/include" />
+			<Add directory="$(DEPEND_DIR)/glm-0.9.8.5" />
+			<Add directory="$(DEPEND_DIR)/glo2-1.0.0/include" />
+		</Compiler>
+		<Unit filename="../include/gltext/glFont.h" />
+		<Unit filename="../include/gltext/glText.h" />
+		<Unit filename="../include/gltext/glTextRenderer.h" />
+		<Unit filename="../include/gltext/typedefs.h" />
+		<Unit filename="../shaders/glyph_fs.glsl">
+			<Option target="Debug_Win_32" />
+			<Option target="Debug_Win_64" />
+		</Unit>
+		<Unit filename="../shaders/glyph_vs.glsl">
+			<Option target="Debug_Win_32" />
+			<Option target="Debug_Win_64" />
+		</Unit>
+		<Unit filename="../src/glFont.cpp" />
+		<Unit filename="../src/glText.cpp" />
+		<Unit filename="../src/glTextRenderer.cpp" />
+		<Unit filename="../src/tester.cpp">
+			<Option target="Debug_Win_32" />
+			<Option target="Debug_Win_64" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
