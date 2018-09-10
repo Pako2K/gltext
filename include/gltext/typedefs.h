@@ -28,7 +28,7 @@
 namespace gltext
 {
   // Position and Size in Window Coordinates (Origin in UL corner, Unit = pixel)
-  typedef int16_t     GT_PositionPxl;
+  using GT_PositionPxl = int16_t;
 
   class GT_Position2D : public std::array<GT_PositionPxl, 2>
   {
@@ -42,7 +42,7 @@ namespace gltext
                     : std::array<GT_PositionPxl, 2>{pos_x, pos_y} {}
   };
 
-  typedef uint16_t     GT_SizePxl;
+  using GT_SizePxl = uint16_t;
 
   class GT_Size2D : public std::array<GT_SizePxl, 2>
   {
@@ -57,8 +57,7 @@ namespace gltext
   };
 
   // Color attribute (in scale 0 - 255, with support to 10-bit color attribute)
-  typedef uint16_t     GT_ColorAttr;
-
+  using GT_ColorAttr = uint16_t;
 
   class GT_Color4 : public std::array<GT_ColorAttr, 4>
   {
@@ -88,10 +87,10 @@ namespace gltext
   };
 
   // Font size in pixels
-  typedef uint16_t       GT_FontSize;
+  using GT_FontSize = uint16_t;
 
   // Character code (limited to UTF-8)
-  typedef uint8_t        GT_CharCode;
+  using GT_CharCode = uint8_t;
 }
 
 

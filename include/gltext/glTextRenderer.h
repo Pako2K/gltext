@@ -25,6 +25,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -58,7 +59,7 @@ namespace gltext
       GLuint _vao;
       GLuint _vbuffer;
 
-      glo2::Program *_program;
+      std::unique_ptr<glo2::Program> _program;
 
       GLint _uTextColor;
 

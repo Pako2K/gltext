@@ -23,6 +23,8 @@
 #ifndef GLTEXT_H
 #define GLTEXT_H
 
+#include <memory>
+
 #include "typedefs.h"
 #include "glFont.h"
 #include "glTextRenderer.h"
@@ -43,7 +45,7 @@ namespace gltext
         * Constructor: creates a text in the specified position, using default font and color
         */
       glText(std::string text, GT_Position2D position)
-            : _text{text}, _position{position}, _font{&glFont::getFont(_s_def_font_name, _s_def_font_size)},
+            : _text{text}, _position{position}, _font{&glFont::get(_s_def_font_name, _s_def_font_size)},
               _renderer{glTextRenderer::getRenderer()} {}
 
       ~glText() {
@@ -102,14 +104,14 @@ namespace gltext
       static GT_FontSize  _s_def_font_size;
       static GT_Color4    _s_def_color;
 
-      std::string       _text;
-      GT_Position2D     _position;
-      std::string       _font_name {_s_def_font_name};
-      GT_FontSize       _font_size {_s_def_font_size};
-      glFont            *_font;
-      GT_Color4         _color {_s_def_color};
+      std::string             _text {""};
+      GT_Position2D           _position {0, 0};
+      std::string             _font_name {_s_def_font_name};
+      GT_FontSize             _font_size {_s_def_font_size};
+      glFont                  *_font;
+      GT_Color4               _color {_s_def_color};
 
-      glTextRenderer    &_renderer;
+      glTextRenderer          &_renderer;
 
     private:
       void updateFont();

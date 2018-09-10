@@ -26,6 +26,8 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <queue>
+#include <memory>
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -47,12 +49,14 @@ namespace gltext
         GT_Position2D   advance;
       };
 
-      static void     addFontsDir   (std::string fonts_dir);
-      static void     fontsFileExt  (std::string ext);
-      static glFont&  getFont       (std::string font_name, GT_FontSize font_size);
-
+      static void     addFontsDir   (const std::string& fonts_dir);
+      static void     fontsFileExt  (const std::string& ext);
+      static glFont&  get           (const std::string& font_name, GT_FontSize font_size);
 
       void release();
+
+      // Destructor (public so it can be called from the caching map)
+       ~glFont();
 
       glFont(const glFont &other) = delete;
       glFont& operator=(const glFont &other) = delete;
@@ -63,9 +67,11 @@ namespace gltext
         return _glyphs.at(chr_code);
       }
 
+
     protected:
-      static std::map<std::string, glFont*> _fonts_cache;
+      static std::map<std::string, std::unique_ptr<glFont>> _fonts_cache;
       static std::map<std::string, uint8_t> _fonts_clients;
+      static std::queue<std::string> _deletion_candidates;
 
       std::string    _name;
       GT_FontSize    _size;
@@ -73,10 +79,8 @@ namespace gltext
 
       std::map<GT_CharCode, glFont::Glyph> _glyphs;
 
-      glFont(std::string font_name, GT_FontSize font_size) throw(std::string);
-
-      ~glFont();
-
+      // Constructor
+      glFont(std::string font_name, GT_FontSize font_size);
 
       inline static std::string uid(std::string font_name, GT_FontSize font_size) {
         return font_name + std::to_string(font_size);
