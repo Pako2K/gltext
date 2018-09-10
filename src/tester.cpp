@@ -20,6 +20,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+
 #include <string>
 #include <iostream>
 
@@ -32,15 +33,17 @@
 
 #include <gltext/glText.h>
 
+#include <gltext/glFont.h>
+
 
 // Number of frame buffer samples for antialiasing
-constexpr int FRAME_BUFFER_SAMPLES {1};
+constexpr int FRAME_BUFFER_SAMPLES {0};
 
 // Number of screen refreshes to complete before next framebuffer swap
 constexpr int SWAP_INTERVAL {0};
 
 
-void createWnd() throw(std::string);
+void createWnd();
 void show();
 
 GLFWwindow * _window;
@@ -72,8 +75,7 @@ int main(int argc, char** args) {
 /// ************************************************************************************** ///
 
 
-void createWnd() throw(std::string)
-{
+void createWnd() {
   //Start GLFW for the whole application (all windows reuse the same GLFW)
 	if (!glfwInit()) {
 		// Initialization failed
@@ -102,8 +104,8 @@ void createWnd() throw(std::string)
 	}
 
   // Resolution of the screen is in pixels
-	//_window = glfwCreateWindow(mode->width, mode->height, "GL WINDOW",  nullptr, nullptr);
-	_window = glfwCreateWindow(mode->width, mode->height, "GL WINDOW",  glfwGetPrimaryMonitor(), nullptr);
+	_window = glfwCreateWindow(mode->width, mode->height, "GL WINDOW",  nullptr, nullptr);
+	//_window = glfwCreateWindow(mode->width, mode->height, "GL WINDOW",  glfwGetPrimaryMonitor(), nullptr);
 	if (!_window){
     glfwTerminate();
     throw std::string("Could not create window.");
@@ -135,10 +137,14 @@ void createWnd() throw(std::string)
 
 void show()
 {
+  gltext::glFont &fnt {gltext::glFont::get("Candarab", 12)};
+
+  fnt.release();
+
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
   gltext::glText txt_fps {"", 0, 0};
-  txt_fps.font("stencil", 24);
+  txt_fps.font("verdana", 24);
   //txt_fps.font(24);
   txt_fps.color(gltext::GT_Color(205, 205, 0));
 

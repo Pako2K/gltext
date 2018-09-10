@@ -65,9 +65,8 @@ void glTextRenderer::draw(const std::string &text, const gltext::glFont &font, c
   size_t  counter {0};
 
   std::vector<vertex> vertices(6 * text.size());
-  std::string::const_iterator   str_it;
-	for (str_it = text.begin(); str_it != text.end(); str_it++) {
-    const gltext::glFont::Glyph &gly = font.glyph(*str_it);
+  for ( auto &chr : text ) {
+    const gltext::glFont::Glyph &gly = font.glyph(chr);
 
     // Only if glyph width is not 0
     if (gly.quad_coord[0].x() != gly.quad_coord[3].x() ) {
@@ -103,11 +102,10 @@ void glTextRenderer::draw(const std::string &text, const gltext::glFont &font, c
 }
 
 
-glTextRenderer::glTextRenderer() {
+glTextRenderer::glTextRenderer() : _program {new glo2::Program()} {
   TRACE("glTextRenderer CONSTRUCTOR CALLED")
 
-  // Program
-  _program = new glo2::Program();
+  // Program & shaders
   glo2::Shader vertex_shader(GL_VERTEX_SHADER);
   glo2::Shader fragment_shader(GL_FRAGMENT_SHADER);
   try{
@@ -168,5 +166,5 @@ glTextRenderer::~glTextRenderer() {
 
   glDeleteBuffers(1, &_vbuffer);
   glDeleteVertexArrays(1, &_vao);
-  delete _program;
+  //delete _program;
 }

@@ -42,5 +42,5 @@ GT_FontSize   glText::_s_def_font_size  {DEFAULT_FONT_SIZE};
 
 void glText::updateFont() {
   _font->release();
-  _font = &glFont::getFont(_font_name, _font_size);
+  _font = &glFont::get(_font_name, _font_size);
 }

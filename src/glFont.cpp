@@ -24,6 +24,7 @@
 
 #include <limits>
 
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -53,73 +54,71 @@ using namespace gltext;
 
 std::vector<std::string>        glFont::_font_dirs {FONTS_DIR};
 std::string                     glFont::_font_file_ext {FONT_EXT};
-std::map<std::string, glFont*>  glFont::_fonts_cache;
+std::map<std::string, std::unique_ptr<glFont>>   glFont::_fonts_cache;
 std::map<std::string, uint8_t>  glFont::_fonts_clients;
+std::queue<std::string> glFont::_deletion_candidates;
 
-void glFont::addFontsDir(std::string fonts_dir) {
+void glFont::addFontsDir(const std::string& fonts_dir) {
   _font_dirs.push_back(fonts_dir);
 }
 
-void glFont::fontsFileExt(std::string ext) {
+void glFont::fontsFileExt(const std::string& ext) {
   _font_file_ext = ext;
 }
 
-glFont& glFont::getFont(std::string font_name, GT_FontSize font_size) {
-  glFont *font;
+glFont& glFont::get(const std::string& font_name, GT_FontSize font_size) {
+  //glFont *font;
   std::string font_uid { uid(font_name, font_size) };
 
   //Check whether the font is already loaded in the cache
-
-  std::map<std::string, glFont*>::const_iterator iter;
-
-  std::map<std::string, glFont*>::const_iterator m_it { _fonts_cache.find(font_uid) };
-  if ( m_it != _fonts_cache.end() ) {
-    font = m_it->second;
+  auto map_it { _fonts_cache.find(font_uid) };
+  if ( map_it != _fonts_cache.end() ) {
     _fonts_clients[font_uid]++;
   }
-  // If not, create the new font
+  // If not, create the new font, if there is still place in the cache
   else if ( _fonts_cache.size() < MAX_CACHE_SIZE ) {
-    font = new glFont(font_name, font_size);
-    _fonts_cache.insert(std::pair<std::string, glFont*>(font_uid, font));
-    _fonts_clients.insert(std::pair<std::string, uint8_t>(font_uid, 1));
+    _fonts_cache.insert(std::make_pair(font_uid,  std::unique_ptr<glFont>( new glFont(font_name, font_size) )));
+    _fonts_clients.insert(std::make_pair(font_uid, uint8_t(1)));
+    map_it = _fonts_cache.find(font_uid);
   }
   else {
-    // Check which font in the cache has less clients
-    std::map<std::string, uint8_t>::const_iterator c_it { _fonts_clients.begin()};
-    uint8_t min_clients {255};
-    std::string min_clients_uid {""};
-    while ( c_it != _fonts_clients.end() ) {
-        if ( c_it->second < min_clients ) {
-          min_clients = c_it->second;
-          min_clients_uid = c_it->first;
-        }
-        c_it++;
+    // Check if there are cndidates for deletion
+    while ( !_deletion_candidates.empty() ) {
+      // delete the font if it was not already deleted and has no clients
+      auto to_delete_ptr = _fonts_clients.find(_deletion_candidates.front());
+      if ( to_delete_ptr != _fonts_clients.end() && to_delete_ptr->second == 0 ) {
+        _fonts_cache.erase(_deletion_candidates.front());
+        _fonts_clients.erase(_deletion_candidates.front());
+        _deletion_candidates.pop();
+        // and add the new font
+        _fonts_cache.insert(std::make_pair(font_uid,  std::unique_ptr<glFont>( new glFont(font_name, font_size) )));
+        _fonts_clients.insert(std::make_pair(font_uid, uint8_t(1)));
+        map_it = _fonts_cache.find(font_uid);
+        break;
+      }
+      else {
+        // Remove from the deletion candidates queue
+        _deletion_candidates.pop();
+      }
     }
-    delete _fonts_cache[min_clients_uid];
-    _fonts_cache.erase(min_clients_uid);
-    _fonts_clients.erase(min_clients_uid);
-    font = new glFont(font_name, font_size);
-    _fonts_cache.insert(std::pair<std::string, glFont*>(font_uid, font));
-    _fonts_clients.insert(std::pair<std::string, uint8_t>(font_uid, 1));
   }
 
-  return *font;
+  if ( map_it == _fonts_cache.end() )
+    throw std::string("FONT CANNOT BE ALLOCATED. FONT CACHE IS FULL AND IN USE.");
+  else
+    return *map_it->second;
 }
 
 
 void glFont::release() {
   _fonts_clients[uid()]--;
   if ( _fonts_clients[uid()] == 0 ) {
-    if ( _fonts_cache.size() == MAX_CACHE_SIZE ) {
-      _fonts_cache.erase(uid());
-      _fonts_clients.erase(uid());
-      delete this;
-    }
+    _deletion_candidates.push(uid());
   }
 }
 
 
-glFont::glFont(std::string font_name, GT_FontSize font_size) throw(std::string) : _name{font_name}, _size{font_size} {
+glFont::glFont(std::string font_name, GT_FontSize font_size) : _name{font_name}, _size{font_size} {
   TRACE(std::string("glFont CONSTRUCTOR CALLED " + font_name + " - " + std::to_string(font_size) ))
 
   // Initialize Freetype
@@ -161,8 +160,9 @@ glFont::glFont(std::string font_name, GT_FontSize font_size) throw(std::string) 
   GT_PositionPxl  descender { 0 };
   for (FT_ULong chr = MIN_CHAR_CODE; chr <= MAX_CHAR_CODE; chr++) {
     // Load character glyph
-    if ( !FT_Load_Char(face, chr, FT_LOAD_RENDER) )
+    if ( !FT_Load_Char(face, chr, FT_LOAD_RENDER) ) {
       texture_width += face->glyph->bitmap.width;
+    }
     // Store Descender
     descender = std::max(descender, GT_PositionPxl(face->glyph->bitmap.rows - face->glyph->bitmap_top));
   }
